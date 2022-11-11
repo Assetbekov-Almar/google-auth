@@ -2,12 +2,35 @@ const https = require('https')
 const fs = require('fs')
 const path = require('path')
 const express = require('express')
+const helmet = require('helmet')
 
 const PORT = 3000
 
 const app = express()
 
-app.get('/secret', (req, res) => {
+app.use(helmet())
+
+function checkLoggedIn(req, res, next) {
+	const isLoggedIn = true
+	if (!isLoggedIn) {
+		return res.status(401).json({error: 'You must log in!'})
+	}
+	next()
+}
+
+app.get('/auth/google', (req, res) => {
+
+})
+
+app.get('/auth/google/callback', (req, res) => {
+
+})
+
+app.get('/auth', (req, res) => {
+
+})
+
+app.get('/secret', checkLoggedIn, (req, res) => {
 	return res.send('Secret')
 })
 
